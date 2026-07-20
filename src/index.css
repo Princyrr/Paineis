@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes beamLines {
+  0% {
+    transform: translateY(120%) scaleY(0.2);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(-140%) scaleY(1);
+    opacity: 0;
+  }
+}
