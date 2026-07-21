@@ -1,4 +1,5 @@
 import plataforma from "../assets/plataforma.png";
+import homemFuturista from "../assets/homemfuturista.gif";
 
 export function Platform() {
   return (
@@ -51,6 +52,21 @@ export function Platform() {
             zIndex: 1,
           }}
         >
+          {/* Homem futurista */}
+          <img
+            src={homemFuturista}
+            alt="Homem Futurista"
+            draggable={false}
+            className="absolute pointer-events-none select-none"
+            style={{
+              left: "50%",
+              bottom: "0",
+              transform: "translateX(-50%)",
+              width: 360,
+              zIndex: 2,
+            }}
+          />
+
           {/* Feixe principal */}
           <div
             className="absolute inset-0"

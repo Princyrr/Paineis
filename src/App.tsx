@@ -156,7 +156,7 @@ function App() {
   >({});
   const [draggingCard, setDraggingCard] = useState<number | null>(null);
   const [cardWasDragged, setCardWasDragged] = useState(false);
-
+  const [rotationSpeed, setRotationSpeed] = useState(0.003);
   const currentDragPosition = useRef({
     x: 0,
     y: 0,
@@ -168,12 +168,12 @@ function App() {
     const tick = (now: number) => {
       const dt = now - last;
       last = now;
-      setRotation((r) => r + dt * 0.008);
+      setRotation((r) => r + dt * rotationSpeed);
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [autoRotate, isDragging]);
+  }, [autoRotate, isDragging, rotationSpeed]);
 
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
@@ -198,18 +198,30 @@ function App() {
     },
     [rotation],
   );
+
   const onPointerMove = useCallback(
     (e: React.PointerEvent) => {
       if (!isDragging || !dragStart.current) return;
+
       const dx = e.clientX - dragStart.current.x;
-      if (Math.abs(dx) > 4) setDragMoved(true);
-      setRotation(dragStart.current.rot + dx * 0.4);
+
+      if (Math.abs(dx) > 4) {
+        setDragMoved(true);
+      }
+
+      setRotation((r) => r + dx * 0.15);
+
+      dragStart.current.x = e.clientX;
+
+      setRotationSpeed(Math.abs(dx) * 0.002);
     },
     [isDragging],
   );
 
   const onPointerUp = useCallback(() => {
     setIsDragging(false);
+
+    setRotationSpeed(0.02);
 
     setTimeout(() => {
       setDragMoved(false);
@@ -281,13 +293,13 @@ function App() {
       />
 
       {/* Platform anchored at bottom center */}
-      <div className="absolute left-1/2 bottom-0 -translate-x-1/2 pointer-events-none z-20">
+      <div className="absolute left-1/2 bottom-0 -translate-x-1/2 pointer-events-none z-10">
         <Platform />
       </div>
 
       {/* Scattered floating panels */}
       <div
-        className="absolute z-30"
+        className="absolute "
         style={{ left: "50%", bottom: 250, width: 0, height: 0 }}
       >
         {panels.map((panel, i) => {
@@ -304,10 +316,13 @@ function App() {
           const current = detached ?? { x, y };
 
           const depth = (Math.sin(angle) + 1) / 2;
-          const scale = (0.65 + depth * 0.45) * pos.size;
-          const opacity = 0.4 + depth * 0.6;
-          const blur = (1 - depth) * 2;
-          const zIndex = Math.round(depth * 100);
+
+          const visibility = Math.max(0, Math.min(1, (depth - 0.25) / 0.75));
+
+          const scale = (0.65 + visibility * 0.45) * pos.size;
+          const opacity = 0.6 + visibility * 0.75;
+          const blur = (1 - visibility) * 2;
+          const zIndex = Math.round(visibility * 100);
 
           return (
             <div
