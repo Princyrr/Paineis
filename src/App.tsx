@@ -252,7 +252,7 @@ function App() {
           backgroundSize: "cover",
           backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
-          opacity: 0.25,
+          opacity: 0.3,
           filter: "brightness(0.7) saturate(1.2)",
         }}
       />
