@@ -211,7 +211,7 @@ function App() {
         setDragMoved(true);
       }
 
-      setRotation((r) => r + dx * 0.15);
+      setRotation((r) => r - dx * 0.15);
 
       dragStart.current.x = e.clientX;
 
