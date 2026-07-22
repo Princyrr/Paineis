@@ -1,5 +1,6 @@
 import plataforma from "../assets/plataforma.png";
-import homemFuturista from "../assets/homemfuturista.gif";
+import homemFuturista from "../assets/homemfuturista2.gif";
+import logoAzul from "../assets/logoazul.png";
 
 export function Platform() {
   return (
@@ -7,7 +8,7 @@ export function Platform() {
       <div
         className="relative"
         style={{
-          width: 700,
+          width: 900,
           height: 900,
         }}
       >
@@ -17,11 +18,11 @@ export function Platform() {
           style={{
             transform: "translateX(-50%)",
             width: 420,
-            height: 90,
+            height: 120,
             borderRadius: "50%",
             background: "rgba(0,180,255,.25)",
             filter: "blur(40px)",
-            bottom: 15,
+            bottom: 10,
             zIndex: 0,
           }}
         />
@@ -34,8 +35,8 @@ export function Platform() {
           className="absolute left-1/2 object-contain select-none pointer-events-none"
           style={{
             transform: "translateX(-50%)",
-            width: 550,
-            bottom: 0,
+            width: 750,
+            bottom: -15,
             zIndex: 0,
           }}
         />
@@ -45,8 +46,8 @@ export function Platform() {
           className="absolute left-1/2 overflow-hidden"
           style={{
             transform: "translateX(-50%)",
-            bottom: 88,
-            width: 300,
+            bottom: 100,
+            width: 350,
             height: "130%",
             borderRadius: 9999,
             zIndex: 1,
@@ -60,10 +61,48 @@ export function Platform() {
             className="absolute pointer-events-none select-none"
             style={{
               left: "50%",
-              bottom: "0",
+              bottom: 2,
               transform: "translateX(-50%)",
               width: 360,
               zIndex: 2,
+            }}
+          />
+
+          {/* Núcleo energético 3D */}
+          <div
+            className="absolute left-1/2"
+            style={{
+              transform: "translateX(-50%)",
+              bottom: 0,
+              width: 80,
+              height: "100%",
+              background:
+                "linear-gradient(to top, rgba(255,255,255,.95), rgba(150,240,255,.8), rgba(0,180,255,.2), transparent)",
+              filter: "blur(2px)",
+              borderRadius: 999,
+              animation: "laserPulse 2s ease-in-out infinite",
+              zIndex: 1,
+            }}
+          />
+
+          {/* Logo */}
+          <img
+            src={logoAzul}
+            alt="Logo"
+            draggable={false}
+            className="absolute pointer-events-none select-none"
+            style={{
+              left: "50%",
+              bottom: 550,
+              transform: "translateX(-50%)",
+              width: 180,
+              zIndex: 3,
+              filter: `
+  drop-shadow(0 0 8px rgba(255,255,255,.9))
+  drop-shadow(0 0 20px rgba(180,255,255,.9))
+  drop-shadow(0 0 40px rgba(120,240,255,.6))
+`,
+              animation: "logoFloat 5s ease-in-out infinite",
             }}
           />
 
@@ -72,9 +111,9 @@ export function Platform() {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, #00d4ff 0%, #00aaff99 20%, #0066ff44 60%, transparent 100%)",
+                "linear-gradient(to top,#00eaff 0%,#008cff99 25%,#0055ff33 60%,transparent)",
               filter: "blur(3px)",
-              borderRadius: 9999,
+              borderRadius: 999,
             }}
           />
 
@@ -95,6 +134,27 @@ export function Platform() {
                 opacity: 0.8,
                 animation: `beamLines ${1.4 + (i % 5) * 0.25}s linear infinite`,
                 animationDelay: `${i * 0.08}s`,
+              }}
+            />
+          ))}
+
+          {/* Anéis de energia subindo dentro do laser */}
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute left-1/2"
+              style={{
+                transform: "translateX(-50%)",
+                bottom: 100 + i * 70,
+                width: 100 + i * 20,
+                height: 38,
+                borderRadius: "50%",
+                border: "10px solid rgba(0,240,255,.65)",
+                boxShadow:
+                  "0 0 20px rgba(0,212,255,.9), inset 0 0 8px rgba(0,212,255,.4)",
+                animation: `ringUp ${4.5 + i * 0.35}s linear infinite`,
+                animationDelay: `${i * 0.3}s`,
+                zIndex: 1,
               }}
             />
           ))}
@@ -149,7 +209,7 @@ export function Platform() {
         />
 
         {/* Partículas */}
-        {Array.from({ length: 78 }, (_, i) => (
+        {Array.from({ length: 98 }, (_, i) => (
           <div
             key={i}
             className="absolute rounded-full"
@@ -173,7 +233,7 @@ export function Platform() {
           className="absolute left-1/2"
           style={{
             transform: "translateX(-50%)",
-            bottom: 68,
+            bottom: 98,
             zIndex: 2,
           }}
         >

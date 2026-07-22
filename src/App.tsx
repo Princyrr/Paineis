@@ -4,6 +4,8 @@ import { Platform } from "./components/Platform";
 import { PanelCard } from "./components/PanelCard";
 import Modal from "./components/Modal";
 import { Hud } from "./components/Hud";
+import { BackgroundHud } from "./components/BackgroundHud";
+import fundo from "./assets/fundo.png";
 
 interface ScatterPos {
   baseAngle: number;
@@ -156,7 +158,7 @@ function App() {
   >({});
   const [draggingCard, setDraggingCard] = useState<number | null>(null);
   const [cardWasDragged, setCardWasDragged] = useState(false);
-  const [rotationSpeed, setRotationSpeed] = useState(0.003);
+  const [rotationSpeed, setRotationSpeed] = useState(0.015);
   const currentDragPosition = useRef({
     x: 0,
     y: 0,
@@ -213,7 +215,7 @@ function App() {
 
       dragStart.current.x = e.clientX;
 
-      setRotationSpeed(Math.abs(dx) * 0.002);
+      setRotationSpeed(Math.abs(dx) * 0.008);
     },
     [isDragging],
   );
@@ -243,54 +245,35 @@ function App() {
       onPointerUp={onPointerUp}
       onPointerLeave={onPointerUp}
     >
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `url(${fundo})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center bottom",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.25,
+          filter: "brightness(0.7) saturate(1.2)",
+        }}
+      />
       {/* Background grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(0,100,180,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,100,180,0.05) 1px, transparent 1px)",
-          backgroundSize: "50px 50px",
+          backgroundImage: `
+linear-gradient(rgba(0,255,255,.05) 1px, transparent 1px),
+linear-gradient(90deg, rgba(0,255,255,.05) 1px, transparent 1px)
+`,
+          backgroundSize: "70px 70px",
+          opacity: 0.45,
           maskImage:
             "radial-gradient(ellipse at 50% 80%, black 20%, transparent 75%)",
           WebkitMaskImage:
             "radial-gradient(ellipse at 50% 80%, black 20%, transparent 75%)",
         }}
       />
-
-      {/* Star field */}
-      <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 80 }, (_, i) => {
-          const x = (i * 37) % 100;
-          const y = (i * 53) % 100;
-          const size = i % 4 === 0 ? 2 : 1;
-          return (
-            <div
-              key={i}
-              className="absolute rounded-full"
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                width: size,
-                height: size,
-                background: "white",
-                opacity: 0.2 + (i % 5) * 0.1,
-                animation: `twinkle ${2 + (i % 4)}s ease-in-out infinite`,
-                animationDelay: `${(i % 7) * 0.3}s`,
-              }}
-            />
-          );
-        })}
-      </div>
-
-      {/* Horizon glow */}
-      <div
-        className="absolute bottom-0 left-0 right-0 pointer-events-none"
-        style={{
-          height: "40%",
-          background:
-            "linear-gradient(to top, rgba(0,80,160,0.15) 0%, transparent 100%)",
-        }}
-      />
+      {/* HUD gigante */}
+      <BackgroundHud />
 
       {/* Platform anchored at bottom center */}
       <div className="absolute left-1/2 bottom-0 -translate-x-1/2 pointer-events-none z-10">

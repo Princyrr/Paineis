@@ -25,10 +25,7 @@ export default function Modal({ panel, isOpen, onClose }: ModalProps) {
         : "#ffcc00";
 
   return (
-    <div
-      className="fixed inset-0 z-[9999] bg-black/30 backdrop-blur-xl"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-[9999]  backdrop-blur-xl" onClick={onClose}>
       <div
         onClick={(e) => e.stopPropagation()}
         className="relative h-screen w-screen overflow-y-auto"
@@ -60,18 +57,6 @@ export default function Modal({ panel, isOpen, onClose }: ModalProps) {
             src={panel.image}
             alt={panel.title}
             className="h-full w-full object-cover object-top"
-          />
-
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(
-                to top,
-                rgba(3,10,25,.98),
-                rgba(3,10,25,.45),
-                transparent
-              )`,
-            }}
           />
         </div>
 
@@ -121,20 +106,6 @@ export default function Modal({ panel, isOpen, onClose }: ModalProps) {
               <ExternalLink size={22} />
             </a>
           )}
-        </div>
-
-        {/* Scan Lines */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.03]">
-          {Array.from({ length: 80 }).map((_, index) => (
-            <div
-              key={index}
-              style={{
-                height: 2,
-                background: "#ffffff",
-                marginBottom: 8,
-              }}
-            />
-          ))}
         </div>
       </div>
     </div>
