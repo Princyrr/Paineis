@@ -29,165 +29,165 @@ export const panels: Panel[] = [
   {
     id: 1,
     title: "Análise dos Egressos",
-    description: "Análise dos egressos",
+    description:
+      "Monitora a trajetória dos egressos, permitindo analisar inserção profissional, empregabilidade e conexão entre formação e mercado de trabalho.",
     image: image01,
-    link: "https://site1.com",
+    link: "https://observatorios.fiepr.org.br/salaprospectiva/web/fiepb/analise-egresso",
     color: "#00d4ff",
-
     trend: "up",
   },
+
   {
     id: 2,
     title: "Análise de Acidentes de Trabalho",
     description:
-      "Quantum entanglement field measurements showing stable coherence levels. Decoherence rate maintained below critical threshold of 0.03 qubits/ms.",
+      "Reúne dados sobre acidentes de trabalho para identificar ocorrências, padrões e indicadores de segurança, apoiando ações de prevenção e redução de riscos.",
     image: image02,
     link: "https://site2.com",
     color: "#00ff88",
-
     trend: "stable",
   },
+
   {
     id: 3,
     title: "Cadastro Nacional",
     description:
-      "Central reactor plasma containment temperature readings. Magnetic field integrity at 99.7% with fusion efficiency exceeding standard parameters.",
+      "Centraliza informações cadastrais de empresas e organizações, facilitando a consulta, análise e utilização estratégica de dados para estudos e decisões.",
     image: image03,
     link: "https://site3.com",
     color: "#ff6b35",
-
     trend: "up",
   },
+
   {
     id: 4,
     title: "Data Ensight",
     description:
-      "WIMP interaction events detected in the last 24-hour cycle. Collision cross-section analysis reveals anomalous clustering near sector 7-G.",
+      "Plataforma de inteligência de dados que integra informações e análises para transformar dados em evidências, insights e suporte à tomada de decisão.",
     image: image04,
     link: "https://site4.com",
     color: "#b44fff",
-
     trend: "up",
   },
+
   {
     id: 5,
     title: "Empresas Ativas",
     description:
-      "LIGO-class sensor array detecting spacetime curvature anomalies. Current strain sensitivity at 10^-21 Hz, with 3 significant events flagged this cycle.",
+      "Apresenta um panorama das empresas ativas, permitindo analisar distribuição, características e dinâmica do ambiente empresarial em diferentes territórios.",
     image: image05,
     link: "https://site5.com",
     color: "#ffcc00",
-
     trend: "stable",
   },
+
   {
     id: 6,
     title: "Enriquecimento de Empresas",
     description:
-      "Charged particle accelerator beam focus metrics. Emittance correction algorithms operating at 96.4% efficiency with sub-nanometer precision alignment.",
+      "Amplia informações cadastrais e econômicas das empresas a partir da integração de diferentes fontes de dados, qualificando análises e estudos estratégicos.",
     image: image06,
     link: "https://site6.com",
     color: "#00d4ff",
-
     trend: "up",
   },
+
   {
     id: 7,
     title: "HUB do Observatório",
     description:
-      "FTL relay network signal integrity and packet transmission rates across 47 active nodes. Latency below 2ms with zero packet loss in the last hour.",
+      "Concentra produtos, dados e soluções do Observatório em um ambiente integrado, facilitando o acesso às informações e ferramentas de inteligência.",
     image: image07,
-    link: "https://site7.com",
+    link: "http://hub.observatoriopb.com.br/",
     color: "#ff4488",
-
     trend: "up",
   },
+
   {
     id: 8,
     title: "Indicadores da Juventude Brasileira",
     description:
-      "Penning trap magnetic field stability for antimatter storage. Containment efficiency at 99.99% with electromagnetic coil redundancy active on all systems.",
+      "Reúne indicadores sobre a população jovem brasileira, permitindo acompanhar aspectos demográficos, educacionais, profissionais e socioeconômicos.",
     image: image08,
     link: "https://site8.com",
     color: "#00ff88",
-
     trend: "stable",
   },
+
   {
     id: 9,
     title: "Infraestrutura",
     description:
-      "Deep space observation array tracking 1,247 exoplanets. Spectrographic analysis identifies 3 candidates with atmospheric biosignatures in the habitable zone.",
+      "Apresenta informações sobre infraestrutura e sua distribuição territorial, apoiando análises de capacidade, cobertura e desenvolvimento regional.",
     image: image09,
     link: "https://site9.com",
     color: "#ffcc00",
-
     trend: "up",
   },
+
   {
     id: 10,
     title: "Mapeamento Empresas",
     description:
-      "Real-time threat detection and neutralization across all network perimeters. 14,823 intrusion attempts blocked this session with zero breaches recorded.",
+      "Permite visualizar e analisar a distribuição das empresas no território, identificando concentrações, setores de atividade e oportunidades regionais.",
     image: image10,
     link: "https://site10.com",
     color: "#ff6b35",
-
     trend: "down",
   },
+
   {
     id: 11,
     title: "Mapeamento SENAI",
     description:
-      "Alcubierre metric distortion measurements across the propulsion manifold. Exotic matter density requirements reduced by 12% through topology optimization.",
+      "Apresenta a distribuição da atuação e da estrutura do SENAI, apoiando a visualização da oferta de serviços e sua relação com as demandas territoriais.",
     image: image11,
     link: "https://site11.com",
     color: "#b44fff",
-
     trend: "up",
   },
+
   {
     id: 12,
     title: "Monitor Nacional de Investimentos",
     description:
-      "Multi-species biological signature array with 360-degree coverage. 847 distinct life form signatures classified across 12 taxonomic categories.",
+      "Acompanha investimentos realizados no território nacional, permitindo identificar valores, setores, localidades e movimentos relevantes para a economia.",
     image: image12,
     link: "https://site12.com",
     color: "#00ff88",
-
     trend: "up",
   },
+
   {
     id: 13,
     title: "Painel de Prospecção",
     description:
-      "Chronometric sensor array detecting localized time dilation effects. Current variance from baseline timeline within acceptable 0.0003% tolerance band.",
+      "Apoia a identificação e análise de empresas e oportunidades estratégicas, utilizando dados para orientar ações de prospecção e relacionamento.",
     image: image13,
     link: "https://site13.com",
     color: "#00d4ff",
-
     trend: "stable",
   },
+
   {
     id: 14,
     title: "Portal dos Sindicatos",
     description:
-      "Power distribution network load balancing across 32 primary conduits. Zero-point energy extraction efficiency at record 134% of theoretical maximum.",
+      "Reúne informações e serviços relacionados aos sindicatos, facilitando o acesso a dados institucionais e fortalecendo a conexão com o setor industrial.",
     image: image14,
     link: "https://site14.com",
     color: "#ffcc00",
-
     trend: "up",
   },
+
   {
     id: 15,
     title: "Previsibilidade de Oferta",
     description:
-      "Photon emitter array coherence and resolution metrics for holodeck subsystems. Currently rendering 47 simultaneous environments at 8K volumetric resolution.",
+      "Utiliza dados e indicadores para analisar a disponibilidade e o comportamento da oferta, contribuindo para antecipar cenários e apoiar decisões estratégicas.",
     image: image15,
     link: "https://site15.com",
     color: "#ff4488",
-
     trend: "up",
   },
 ];

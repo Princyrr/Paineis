@@ -1,5 +1,5 @@
 import plataforma from "../assets/plataforma.png";
-import homemFuturista from "../assets/homemfuturista2.gif";
+import { ParticleCharacter } from "./ParticleCharacter";
 import logoAzul from "../assets/logoazul.png";
 
 export function Platform() {
@@ -20,7 +20,7 @@ export function Platform() {
             width: 420,
             height: 120,
             borderRadius: "50%",
-            background: "rgba(0,180,255,.25)",
+            background: "rgba(iscila)",
             filter: "blur(40px)",
             bottom: 10,
             zIndex: 0,
@@ -54,19 +54,7 @@ export function Platform() {
           }}
         >
           {/* Homem futurista */}
-          <img
-            src={homemFuturista}
-            alt="Homem Futurista"
-            draggable={false}
-            className="absolute pointer-events-none select-none"
-            style={{
-              left: "50%",
-              bottom: 2,
-              transform: "translateX(-50%)",
-              width: 360,
-              zIndex: 2,
-            }}
-          />
+          <ParticleCharacter />
 
           {/* Núcleo energético 3D */}
           <div

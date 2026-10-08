@@ -45,7 +45,7 @@ export function Hud() {
           className="font-mono text-xs"
           style={{ color: "rgba(0,200,255,0.4)", fontSize: 10 }}
         >
-          CLICK NO PAINEL PARA VER DETALHES
+          CLIQUE NO PAINEL PARA VER DETALHES
         </span>
       </div>
 
@@ -60,7 +60,7 @@ export function Hud() {
             className="font-mono text-xs"
             style={{ color: "rgba(0,255,136,0.6)", fontSize: 10 }}
           >
-            ORBITA DE DADOS
+            ÓRBITA DE DADOS
           </span>
         </div>
       </div>

@@ -2,10 +2,13 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { panels, Panel } from "./data/panels";
 import { Platform } from "./components/Platform";
 import { PanelCard } from "./components/PanelCard";
+import { FutureVision } from "./components/FutureVision/FutureVision";
+
 import Modal from "./components/Modal";
 import { Hud } from "./components/Hud";
 import { BackgroundHud } from "./components/BackgroundHud";
 import fundo from "./assets/fundo.png";
+import OpeningPage from "./components/OpeningPage";
 
 interface ScatterPos {
   baseAngle: number;
@@ -163,6 +166,10 @@ function App() {
     x: 0,
     y: 0,
   });
+  const [futureVision, setFutureVision] = useState(false);
+  const [enteringVision, setEnteringVision] = useState(false);
+  const [showOpening, setShowOpening] = useState(true);
+
   // Auto-rotate
   useEffect(() => {
     if (!autoRotate || isDragging) return;
@@ -231,217 +238,274 @@ function App() {
 
     dragStart.current = null;
   }, []);
+
+  const enterFutureVision = () => {
+    if (enteringVision || futureVision) return;
+
+    setEnteringVision(true);
+
+    // Aguarda a animação de transporte
+    setTimeout(() => {
+      setFutureVision(true);
+      setEnteringVision(false);
+    }, 1200);
+  };
   return (
-    <div
-      className="relative w-full h-screen overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(ellipse at 50% 100%, #001428 0%, #000510 50%, #000005 100%)",
-        cursor: isDragging ? "grabbing" : "grab",
-        touchAction: "none",
-      }}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerLeave={onPointerUp}
-    >
+    <>
+      {showOpening && <OpeningPage onComplete={() => setShowOpening(false)} />}
+
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="relative w-full h-screen overflow-hidden"
         style={{
-          backgroundImage: `url(${fundo})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center bottom",
-          backgroundRepeat: "no-repeat",
-          opacity: 0.3,
-          filter: "brightness(0.7) saturate(1.2)",
+          background:
+            "radial-gradient(ellipse at 50% 100%, #001428 0%, #000510 50%, #000005 100%)",
+          cursor: isDragging ? "grabbing" : "grab",
+          touchAction: "none",
         }}
-      />
-      {/* Background grid */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+      >
+        {" "}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `url(${fundo})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center bottom",
+            backgroundRepeat: "no-repeat",
+            opacity: 0.3,
+            filter: "brightness(0.7) saturate(1.2)",
+          }}
+        />
+        {enteringVision && (
+          <div className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden">
+            {/* Flash central */}
+            <div className="absolute inset-0 bg-cyan-400/10 animate-visionFlash" />
+
+            {/* Portal central */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div className="vision-portal" />
+              <div className="vision-portal vision-portal-2" />
+              <div className="vision-portal vision-portal-3" />
+            </div>
+
+            {/* Feixes indo para o centro */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="vision-rays" />
+            </div>
+
+            {/* Vinheta */}
+            <div className="absolute inset-0 bg-black animate-visionVignette" />
+          </div>
+        )}
+        <FutureVision
+          active={futureVision}
+          rotation={rotation}
+          positions={positions}
+          onExit={() => setFutureVision(false)}
+          onSelect={(panel) => setSelected(panel)}
+        />
+        {/* Background grid */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `
 linear-gradient(rgba(0,255,255,.05) 1px, transparent 1px),
 linear-gradient(90deg, rgba(0,255,255,.05) 1px, transparent 1px)
 `,
-          backgroundSize: "70px 70px",
-          opacity: 0.45,
-          maskImage:
-            "radial-gradient(ellipse at 50% 80%, black 20%, transparent 75%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse at 50% 80%, black 20%, transparent 75%)",
-        }}
-      />
-      {/* HUD gigante */}
-      <BackgroundHud />
+            backgroundSize: "70px 70px",
+            opacity: 0.45,
+            maskImage:
+              "radial-gradient(ellipse at 50% 80%, black 20%, transparent 75%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse at 50% 80%, black 20%, transparent 75%)",
+          }}
+        />
+        {/* HUD gigante */}
+        <BackgroundHud />
+        {/* Platform anchored at bottom center */}
+        <div className="absolute left-1/2 bottom-0 -translate-x-1/2 pointer-events-none z-10">
+          {!showOpening && <Platform />}
+        </div>
+        {/* Scattered floating panels */}
+        <div
+          className="absolute "
+          style={{ left: "50%", bottom: 250, width: 0, height: 0 }}
+        >
+          {panels.map((panel, i) => {
+            const detached = detachedPanels[panel.id];
 
-      {/* Platform anchored at bottom center */}
-      <div className="absolute left-1/2 bottom-0 -translate-x-1/2 pointer-events-none z-10">
-        <Platform />
-      </div>
+            const pos = positions[i];
 
-      {/* Scattered floating panels */}
-      <div
-        className="absolute "
-        style={{ left: "50%", bottom: 250, width: 0, height: 0 }}
-      >
-        {panels.map((panel, i) => {
-          const detached = detachedPanels[panel.id];
+            const angle = ((pos.baseAngle + rotation) * Math.PI) / 180;
 
-          const pos = positions[i];
+            const x = Math.cos(angle) * pos.radius;
 
-          const angle = ((pos.baseAngle + rotation) * Math.PI) / 180;
+            const y = pos.yOffset + Math.sin(angle) * 30;
 
-          const x = Math.cos(angle) * pos.radius;
+            const current = detached ?? { x, y };
 
-          const y = pos.yOffset + Math.sin(angle) * 30;
+            const depth = (Math.sin(angle) + 1) / 2;
 
-          const current = detached ?? { x, y };
+            const visibility = Math.max(0, Math.min(1, (depth - 0.25) / 0.75));
 
-          const depth = (Math.sin(angle) + 1) / 2;
+            const scale = (0.65 + visibility * 0.45) * pos.size;
+            const opacity = 0.6 + visibility * 0.75;
+            const blur = (1 - visibility) * 2;
+            const zIndex = Math.round(visibility * 100);
 
-          const visibility = Math.max(0, Math.min(1, (depth - 0.25) / 0.75));
+            return (
+              <div
+                key={panel.id}
+                className="absolute"
+                onPointerDown={(e) => {
+                  e.stopPropagation();
 
-          const scale = (0.65 + visibility * 0.45) * pos.size;
-          const opacity = 0.6 + visibility * 0.75;
-          const blur = (1 - visibility) * 2;
-          const zIndex = Math.round(visibility * 100);
+                  setDraggingCard(panel.id);
+                  setCardWasDragged(false);
 
-          return (
-            <div
-              key={panel.id}
-              className="absolute"
-              onPointerDown={(e) => {
-                e.stopPropagation();
+                  const startX = e.clientX;
+                  const startY = e.clientY;
 
-                setDraggingCard(panel.id);
-                setCardWasDragged(false);
-
-                const startX = e.clientX;
-                const startY = e.clientY;
-
-                const startPos = detached ?? {
-                  x,
-                  y,
-                };
-
-                setDetachedPanels((prev) => ({
-                  ...prev,
-                  [panel.id]: startPos,
-                }));
-
-                const move = (ev: PointerEvent) => {
-                  const distance =
-                    Math.abs(ev.clientX - startX) +
-                    Math.abs(ev.clientY - startY);
-
-                  if (distance > 5) {
-                    setCardWasDragged(true);
-                  }
-
-                  const newX = startPos.x + (ev.clientX - startX);
-                  const newY = startPos.y + (ev.clientY - startY);
-
-                  currentDragPosition.current = {
-                    x: newX,
-                    y: newY,
+                  const startPos = detached ?? {
+                    x,
+                    y,
                   };
 
                   setDetachedPanels((prev) => ({
                     ...prev,
-                    [panel.id]: {
+                    [panel.id]: startPos,
+                  }));
+
+                  const move = (ev: PointerEvent) => {
+                    const distance =
+                      Math.abs(ev.clientX - startX) +
+                      Math.abs(ev.clientY - startY);
+
+                    if (distance > 5) {
+                      setCardWasDragged(true);
+                    }
+
+                    const newX = startPos.x + (ev.clientX - startX);
+                    const newY = startPos.y + (ev.clientY - startY);
+
+                    currentDragPosition.current = {
                       x: newX,
                       y: newY,
-                    },
-                  }));
-                };
+                    };
 
-                const up = () => {
-                  const { x, y } = currentDragPosition.current;
+                    setDetachedPanels((prev) => ({
+                      ...prev,
+                      [panel.id]: {
+                        x: newX,
+                        y: newY,
+                      },
+                    }));
+                  };
 
-                  const distance = Math.sqrt(x * x + y * y);
+                  const up = () => {
+                    const { x, y } = currentDragPosition.current;
 
-                  if (distance < 250) {
-                    setDetachedPanels((prev) => {
-                      const copy = { ...prev };
+                    const distance = Math.sqrt(x * x + y * y);
 
-                      delete copy[panel.id];
+                    if (distance < 250) {
+                      setDetachedPanels((prev) => {
+                        const copy = { ...prev };
 
-                      return copy;
-                    });
-                  }
+                        delete copy[panel.id];
 
-                  setDraggingCard(null);
+                        return copy;
+                      });
+                    }
 
-                  window.removeEventListener("pointermove", move);
+                    setDraggingCard(null);
 
-                  window.removeEventListener("pointerup", up);
-                };
-                window.addEventListener("pointermove", move);
+                    window.removeEventListener("pointermove", move);
 
-                window.addEventListener("pointerup", up);
-              }}
-              onDoubleClick={() => {
-                setDetachedPanels((prev) => {
-                  const copy = { ...prev };
-                  delete copy[panel.id];
-                  return copy;
-                });
-              }}
-              style={{
-                transform: detached
-                  ? `translate3d(${current.x}px, ${current.y}px,0)`
-                  : `translate3d(${x}px, ${y}px,0) translate(-50%,-50%) scale(${scale})`,
+                    window.removeEventListener("pointerup", up);
+                  };
+                  window.addEventListener("pointermove", move);
 
-                transition: detached ? "none" : "transform 0.6s ease",
-
-                opacity,
-                filter: detached
-                  ? "none"
-                  : blur > 0.1
-                    ? `blur(${blur}px)`
-                    : "none",
-
-                zIndex: detached ? 9999 : zIndex,
-
-                pointerEvents: "auto",
-
-                willChange: "transform",
-
-                animation: detached
-                  ? "none"
-                  : `floatPanel ${pos.floatDuration}s ease-in-out infinite`,
-
-                animationDelay: `${pos.floatDelay}s`,
-
-                cursor: detached ? "grab" : "pointer",
-              }}
-            >
-              <PanelCard
-                panel={panel}
-                onClick={() => {
-                  if (cardWasDragged) return;
-
-                  console.log("ABRIR MODAL");
-                  setSelected(panel);
+                  window.addEventListener("pointerup", up);
                 }}
-              />
-            </div>
-          );
-        })}
-      </div>
+                onDoubleClick={() => {
+                  setDetachedPanels((prev) => {
+                    const copy = { ...prev };
+                    delete copy[panel.id];
+                    return copy;
+                  });
+                }}
+                style={{
+                  transform: detached
+                    ? `translate3d(${current.x}px, ${current.y}px,0)`
+                    : `translate3d(${x}px, ${y}px,0) translate(-50%,-50%) scale(${scale})`,
 
-      {/* HUD overlay */}
-      <Hud />
+                  transition: detached ? "none" : "transform 0.6s ease",
 
-      {/* Modal */}
+                  opacity,
+                  filter: detached
+                    ? "none"
+                    : blur > 0.1
+                      ? `blur(${blur}px)`
+                      : "none",
 
-      <Modal
-        panel={selected}
-        isOpen={selected !== null}
-        onClose={() => setSelected(null)}
-      />
-      <style>{`
+                  zIndex: detached ? 9999 : zIndex,
+
+                  pointerEvents: "auto",
+
+                  willChange: "transform",
+
+                  animation: detached
+                    ? "none"
+                    : `floatPanel ${pos.floatDuration}s ease-in-out infinite`,
+
+                  animationDelay: `${pos.floatDelay}s`,
+
+                  cursor: detached ? "grab" : "pointer",
+                }}
+              >
+                <PanelCard
+                  panel={panel}
+                  onClick={() => {
+                    if (cardWasDragged) return;
+
+                    console.log("ABRIR MODAL");
+                    setSelected(panel);
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
+        {/* HUD overlay */}
+        <Hud />
+        <button
+          onClick={enterFutureVision}
+          className="absolute top-8 left-1/2 -translate-x-1/2 z-[100]"
+          style={{
+            padding: "12px 24px",
+            borderRadius: 999,
+            border: "1px solid rgba(0,212,255,.5)",
+            background: "rgba(0,20,35,.65)",
+            color: "#00d4ff",
+            backdropFilter: "blur(10px)",
+            boxShadow: "0 0 20px rgba(0,212,255,.2)",
+            letterSpacing: 2,
+            fontSize: 11,
+            cursor: "pointer",
+          }}
+        >
+          ENTRAR NA VISÃO
+        </button>
+        {/* Modal */}
+        <Modal
+          panel={selected}
+          isOpen={selected !== null}
+          onClose={() => setSelected(null)}
+        />
+        <style>{`
         @keyframes floatUp {
           0% { transform: translateY(0) scale(1); opacity: 0; }
           20% { opacity: 0.7; }
@@ -464,8 +528,151 @@ linear-gradient(90deg, rgba(0,255,255,.05) 1px, transparent 1px)
           0%, 100% { translate: 0 0; }
           50% { translate: 0 -12px; }
         }
+@keyframes visionFlash {
+  0% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-visionFlash {
+  animation: visionFlash 1.2s ease-out forwards;
+}
+
+@keyframes visionVignette {
+  0% {
+    opacity: 0;
+  }
+
+  45% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.95;
+  }
+}
+
+.animate-visionVignette {
+  animation: visionVignette 1.2s ease-in forwards;
+}
+
+.vision-portal {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 212, 255, 0.9);
+  box-shadow:
+    0 0 20px rgba(0, 212, 255, 0.8),
+    0 0 60px rgba(0, 212, 255, 0.5),
+    0 0 120px rgba(0, 212, 255, 0.3);
+
+  animation: portalExpand 1.2s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+.vision-portal-2 {
+  animation-delay: 0.08s;
+}
+
+.vision-portal-3 {
+  animation-delay: 0.16s;
+}
+
+@keyframes portalExpand {
+  0% {
+    width: 80px;
+    height: 80px;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    width: 1800px;
+    height: 1800px;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.vision-rays {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #00d4ff;
+
+  box-shadow:
+    0 0 20px #00d4ff,
+    0 0 50px rgba(0, 212, 255, 0.8),
+    0 0 100px rgba(0, 212, 255, 0.5);
+
+  animation: visionCore 1.2s ease-in forwards;
+}
+
+@keyframes visionCore {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+    transform: scale(3);
+  }
+
+  60% {
+    transform: scale(12);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(100);
+    opacity: 1;
+  }
+}
+
+@keyframes visionZoom {
+  0% {
+    transform: scale(1);
+  }
+
+  30% {
+    transform: scale(1.06);
+  }
+
+  55% {
+    transform: scale(1.2);
+  }
+
+  75% {
+    transform: scale(1.55);
+  }
+
+  100% {
+    transform: scale(3.5);
+  }
+}
+
+.vision-zoom {
+  animation: visionZoom 1.2s cubic-bezier(0.55, 0, 0.15, 1) forwards;
+  transform-origin: center center;
+  will-change: transform;
+}
+
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }
 
